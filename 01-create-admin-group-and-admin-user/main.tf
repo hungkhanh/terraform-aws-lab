@@ -12,10 +12,22 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_iam_user" "dev_users" {
+resource "aws_iam_user" "developers_users" {
   count = 2
   name  = "dev_${count.index}"
 }
+
+resource "aws_iam_group_membership" "developers_group" {
+  name = "tf-developers_group"
+
+  users = [
+    aws_iam_user.developers_users[0].name,
+    aws_iam_user.developers_users[1].name,
+  ]
+
+  group = aws_iam_group.developers.name
+}
+
 
 resource "aws_iam_group_policy" "developers_policy" {
   name  = "developers_policy"
