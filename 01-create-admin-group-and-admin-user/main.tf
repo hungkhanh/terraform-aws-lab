@@ -12,6 +12,23 @@ provider "aws" {
   region = "us-east-1"
 }
 
+resource "aws_iam_group_policy" "developers_policy" {
+  name = "developers_policy"
+  group = aws_iam_group.developers.name
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ec2:Describe*",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
+
 resource "aws_iam_group" "developers" {
   name = "developers"
   path = "/users/"
