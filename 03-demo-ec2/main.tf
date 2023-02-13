@@ -21,3 +21,20 @@ resource "aws_vpc" "vpc_linux" {
     Name = "Linux"
   }
 }
+
+resource "aws_subnet" "subnet_linux" {
+  vpc_id     = aws_vpc.vpc_linux.id
+  cidr_block = "10.0.1.0/24"
+
+  tags = {
+    Name = "Linux subnet"
+  }
+}
+
+resource "aws_internet_gateway" "gw_linux" {
+  vpc_id = aws_vpc.vpc_linux.id
+
+  tags = {
+    Name = "Linux gateway"
+  }
+}
